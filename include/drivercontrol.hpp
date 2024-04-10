@@ -13,7 +13,7 @@ void toggleHorzWings();
 void toggleIntake();
 void togglePTO();
 void releaseClamp();
-void toggleRatchet();
+void toggleDeploy();
 // void toggleLift();
 bool getShiftKey();
 // void drop();

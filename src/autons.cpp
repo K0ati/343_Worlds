@@ -440,14 +440,16 @@ void leftSideQualOld() {
 
 void leftSideQual(){
     EzTempChassis.drive_angle_set(-77);
+    toggleHorzWings();
     //Rush midball
     EzTempChassis.pid_drive_set(52, 118, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(25);
+    EzTempChassis.pid_wait_until(5);
+    toggleHorzWings();
     intake = -127;              //intake
     EzTempChassis.pid_wait_until(50);
 
-    EzTempChassis.pid_drive_set(-51, 118, false);
+    EzTempChassis.pid_drive_set(-55, 118, false);
     pros::delay(100);
     EzTempChassis.pid_wait();
 
@@ -458,9 +460,9 @@ void leftSideQual(){
     pros::delay(200);
 
 //BAR
-    EzTempChassis.pid_turn_set(40, TURN_SPEED);
+    EzTempChassis.pid_turn_set(35, TURN_SPEED);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(38);
+    EzTempChassis.pid_wait();
     intake=0;
 
     EzTempChassis.pid_drive_set(-18, DRIVE_SPEED, false);
@@ -488,6 +490,9 @@ void leftSideQual(){
     EzTempChassis.pid_drive_set(35, DRIVE_SPEED, false);
     pros::delay(100);
     EzTempChassis.pid_wait();
+
+    pros::delay(5000);
+    intake=0;
 }
 
 

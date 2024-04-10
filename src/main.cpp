@@ -10,9 +10,10 @@
 // Enter your autons here!
 // Uh Guys be for serious
 AutonFunction autonFunctions[] = {
+    {"Left Quals Rush", leftSideQual},
     {"Right 6 Ball", rightSide6Ball}, 
     {"Right Far Rush", rightSideFarRush},
-    {"Left Quals Rush", leftSideQual},
+    
     {"Skills", skills},  
     {"Left Elims Disrupt", leftSideElimsDisrupt},
     {"Left Elims 4 Ball Bowl Setup", leftSideElimsBowlSetup},
@@ -65,7 +66,7 @@ void initialize() {
     // pid and curve inits
     ezTempChassisInits();
     intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    deploy.set_value(true);
+    toggleIntake();
 
 }
 
@@ -83,6 +84,7 @@ void disabled() {}
 void competition_initialize() {
     ezTempChassisInits();
     intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    
 }
 
 /**
@@ -106,6 +108,8 @@ void autonomous() {
 
 bool wasR1PressedLast = false;
 bool wasR2PressedLast = false;
+bool intakeChecker = true;
+bool wingChecker = true;
 void opcontrol() {
     // task to make sure all motors are plugged in and check the temperature of the drivetrain
     pros::Task motorCheckDT(checkMotorsAndReturnTemperature);
@@ -160,11 +164,14 @@ void opcontrol() {
 
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) 
             && master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) { 
-            toggleRatchet();
-            pros::delay(250);
+            toggleDeploy();
+            wingChecker = false;
+            intakeChecker = false;
+            pros::delay(300);
+            continue;
         }
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && isRatchetOut) { 
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && !isRatchetOut) { 
             togglePTO();
             pros::delay(250);
         }
@@ -172,12 +179,11 @@ void opcontrol() {
         bool isR1Pressed = master.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
         bool isR2Pressed = master.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
 
-        if (isR1Pressed && !wasR1PressedLast && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        if (isR1Pressed && !wasR1PressedLast && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && intakeChecker) {
             toggleIntake();
         }
-        wasR1PressedLast = isR1Pressed;
         
-        if (isR1Pressed && !wasR1PressedLast) {
+        if (isR1Pressed && !wasR1PressedLast && wingChecker) {
             toggleHorzWings();
         }
         wasR1PressedLast = isR1Pressed;
@@ -206,10 +212,16 @@ void opcontrol() {
             EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
         }
 
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+            intakeChecker = true;
+            wingChecker = true;
+        }
+
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
             EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
         }
 
+        
 		pros::delay(ez::util::DELAY_TIME);
 	}
 }

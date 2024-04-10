@@ -88,8 +88,8 @@ void toggleHorzWings() {
   horzwing2.set_value(horzWingsOut);
 }
 
-void toggleRatchet() {
-  isRatchetOut = !isRatchetOut;
+void toggleDeploy() {
+  isRatchetOut=!isRatchetOut;
   deploy.set_value(isRatchetOut);
 }
 
@@ -99,7 +99,7 @@ void releaseClamp() {
 
 void togglePTO() {
   isPtoOut = !isPtoOut;
-  deploy.set_value(!isPtoOut);
+  pto.set_value(!isPtoOut);
 }
 
 void toggleIntake() {
