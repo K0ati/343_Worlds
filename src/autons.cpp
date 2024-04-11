@@ -460,12 +460,12 @@ void leftSideQual(){
     pros::delay(200);
 
 //BAR
-    EzTempChassis.pid_turn_set(35, TURN_SPEED);
+    EzTempChassis.pid_turn_set(30, TURN_SPEED);
     pros::delay(100);
     EzTempChassis.pid_wait();
     intake=0;
 
-    EzTempChassis.pid_drive_set(-18, DRIVE_SPEED, false);
+    EzTempChassis.pid_drive_set(-19, DRIVE_SPEED, false);
     pros::delay(100);
     EzTempChassis.pid_wait();
     
@@ -476,15 +476,15 @@ void leftSideQual(){
 // Get Matchload ball
     toggleHorzWings();
 
-    EzTempChassis.pid_drive_set(10, DRIVE_SPEED, false);
+    EzTempChassis.pid_drive_set(12, DRIVE_SPEED, false);
     pros::delay(100);
     EzTempChassis.pid_wait();
 
-    EzTempChassis.pid_swing_set(ez::RIGHT_SWING, 5, DRIVE_SPEED);
+    EzTempChassis.pid_swing_set(ez::RIGHT_SWING, 2, DRIVE_SPEED);
     pros::delay(100);
     EzTempChassis.pid_wait_until(20);
     toggleHorzWings();
-    EzTempChassis.pid_wait_until(7);
+    EzTempChassis.pid_wait_until(5);
     intake=127;
 
     EzTempChassis.pid_drive_set(35, DRIVE_SPEED, false);

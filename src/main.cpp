@@ -171,7 +171,7 @@ void opcontrol() {
             continue;
         }
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && !isRatchetOut) { 
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && isRatchetOut) { 
             togglePTO();
             pros::delay(250);
         }
