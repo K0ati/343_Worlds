@@ -175,7 +175,7 @@ void default_constants() {
 void modified_exit_conditions() {
   EzTempChassis.pid_turn_exit_condition_set(300_ms, 3_deg, 250_ms, 7_deg, 250_ms, 250_ms);
   EzTempChassis.pid_swing_exit_condition_set(300_ms, 3_deg, 250_ms, 7_deg, 250_ms, 250_ms);
-  EzTempChassis.pid_drive_exit_condition_set(300_ms, 1_in, 250_ms, 3_in, 250_ms, 250_ms);
+  EzTempChassis.pid_drive_exit_condition_set(350_ms, 1_in, 300_ms, 3_in, 300_ms, 300_ms);
 }
 
 void calibrateBothChassis(bool isLemLib /* defaulted to false in the .h file */) {

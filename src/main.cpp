@@ -165,6 +165,7 @@ void opcontrol() {
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) 
             && master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) { 
             toggleDeploy();
+            EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
             wingChecker = false;
             intakeChecker = false;
             pros::delay(300);
