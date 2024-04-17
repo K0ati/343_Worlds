@@ -173,9 +173,9 @@ void default_constants() {
 }
 
 void modified_exit_conditions() {
-  EzTempChassis.pid_turn_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 350_ms, 350_ms);
-  EzTempChassis.pid_swing_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 350_ms, 350_ms);
-  EzTempChassis.pid_drive_exit_condition_set(300_ms, 1_in, 500_ms, 3_in, 350_ms, 350_ms);
+  EzTempChassis.pid_turn_exit_condition_set(200_ms, 3_deg, 200_ms, 7_deg, 200_ms, 200_ms);
+  EzTempChassis.pid_swing_exit_condition_set(200_ms, 3_deg, 200_ms, 7_deg, 200_ms, 200_ms);
+  EzTempChassis.pid_drive_exit_condition_set(200_ms, 1_in, 200_ms, 3_in, 200_ms, 200_ms);
 }
 
 void calibrateBothChassis(bool isLemLib /* defaulted to false in the .h file */) {
