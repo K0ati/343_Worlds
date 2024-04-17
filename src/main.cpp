@@ -10,8 +10,11 @@
 // Enter your autons here!
 // Uh Guys be for serious
 AutonFunction autonFunctions[] = {
-    {"Left Quals Rush", leftSideQual},
     {"Right 6 Ball", rightSide6Ball}, 
+    {"Nothing", doNothing}, 
+    
+    {"Left Quals Rush", leftSideQual},
+    
     {"Right Far Rush", rightSideFarRush},
     
     {"Skills", skills},  

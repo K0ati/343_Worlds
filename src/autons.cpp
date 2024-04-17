@@ -2,7 +2,15 @@
 #include "autons.hpp"
 #include "drivercontrol.hpp"
 
-void doNothing() {}
+void doNothing() {
+    EzTempChassis.pid_drive_set(60, 127, false);
+    pros::delay(100);
+    EzTempChassis.pid_wait_until(58);
+
+    EzTempChassis.pid_drive_set(-60, 120, false);
+    pros::delay(100);
+    EzTempChassis.pid_wait_until(-58);
+}
 // HAHAHAHAH Mr. Pierce is here he was here hahahahahahaha
 // function definitions
 
@@ -442,11 +450,11 @@ void leftSideQual(){
     EzTempChassis.drive_angle_set(-74);
     toggleHorzWings();
     //Rush midball
-    EzTempChassis.pid_drive_set(49, 120, true);
+    EzTempChassis.pid_drive_set(49, 127, true);
+    pros::delay(100);
     EzTempChassis.pid_wait_until(3);
     toggleHorzWings();
     intake = -127;              //intake
-    pros::delay(100);
     EzTempChassis.pid_wait();
 
     EzTempChassis.pid_drive_set(-55, 118, false);
@@ -457,7 +465,7 @@ void leftSideQual(){
     EzTempChassis.pid_wait();
 
     intake=127;                 //outtake
-    pros::delay(200);
+    pros::delay(400);
 
 //BAR
     EzTempChassis.pid_turn_set(26, TURN_SPEED);
@@ -476,7 +484,7 @@ void leftSideQual(){
 // Get Matchload ball
     toggleHorzWings();
 
-    EzTempChassis.pid_drive_set(12, DRIVE_SPEED, false);
+    EzTempChassis.pid_drive_set(11, DRIVE_SPEED, false);
     pros::delay(100);
     EzTempChassis.pid_wait();
 
@@ -484,14 +492,18 @@ void leftSideQual(){
     pros::delay(100);
     EzTempChassis.pid_wait_until(20);
     toggleHorzWings();
-    EzTempChassis.pid_wait_until(3);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_turn_set(38, DRIVE_SPEED);
+    pros::delay(100);
+    EzTempChassis.pid_wait_until(36);
     
 
-    EzTempChassis.pid_drive_set(5, DRIVE_SPEED, false);
+    EzTempChassis.pid_drive_set(10, DRIVE_SPEED, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(3);
+    EzTempChassis.pid_wait_until(8);
 
-    EzTempChassis.pid_turn_set(4, DRIVE_SPEED);
+    EzTempChassis.pid_turn_set(1, DRIVE_SPEED);
     pros::delay(100);
     EzTempChassis.pid_wait();
     intake=127;
@@ -1125,16 +1137,16 @@ void rightSideFarRush() {
 void rightSide6Ball() {
     // New 6 ball
 
-    EzTempChassis.pid_drive_set(3, 127, false);
+    EzTempChassis.pid_drive_set(6, 127, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(1);
+    EzTempChassis.pid_wait_until(4);
 
     intake = -127;
     pros::delay(300);
 
-    EzTempChassis.pid_drive_set(-33, DRIVE_SPEED, false);
+    EzTempChassis.pid_drive_set(-34, DRIVE_SPEED, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(-31);
+    EzTempChassis.pid_wait_until(-32);
     
 
     EzTempChassis.pid_swing_set(ez::LEFT_SWING, -47, DRIVE_SPEED);
@@ -1143,7 +1155,7 @@ void rightSide6Ball() {
 
     // Get Matchload
 
-    horzwing1.set_value(true);
+    toggleHorzWings();
     EzTempChassis.pid_drive_set(-18, 88, false);
     pros::delay(100);
     EzTempChassis.pid_wait_until(-16);
@@ -1153,12 +1165,12 @@ void rightSide6Ball() {
     pros::delay(100);
     EzTempChassis.pid_wait_until(-88);
 
-    horzwing2.set_value(false);
+    toggleHorzWings();
 
-    // Put in goal
-    EzTempChassis.pid_drive_set(-18, 127, false);
+    // Pull out matchload
+    EzTempChassis.pid_drive_set(-13, 127, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(-16);
+    EzTempChassis.pid_wait_until(-11);
 
     EzTempChassis.pid_drive_set(15, 127, false);
     pros::delay(100);
@@ -1177,6 +1189,21 @@ void rightSide6Ball() {
 
     // Turn and put other in goal
     
+
+    EzTempChassis.pid_turn_set(-70, TURN_SPEED, false); //push at angle
+    pros::delay(100);
+    EzTempChassis.pid_wait_until(-65);
+
+    //push in two triballs
+    EzTempChassis.pid_drive_set(-20, 127, false);
+    pros::delay(100);
+    EzTempChassis.pid_wait_until(-18);
+
+    EzTempChassis.pid_drive_set(20, 127, false);
+    pros::delay(100);
+    EzTempChassis.pid_wait_until(18);
+
+
     EzTempChassis.pid_turn_set(110, TURN_SPEED, false); //push at angle
     pros::delay(100);
     EzTempChassis.pid_wait_until(105);
@@ -1194,7 +1221,7 @@ void rightSide6Ball() {
     EzTempChassis.pid_drive_set(-11, 127, false);
     pros::delay(100);
     EzTempChassis.pid_wait_until(-9);
-    EzTempChassis.pid_swing_set(ez::RIGHT_SWING, 20, -127, -90);
+    EzTempChassis.pid_swing_set(ez::RIGHT_SWING, 16, -110, -78);
     pros::delay(100);
     EzTempChassis.pid_wait_until(18);
 
@@ -1213,7 +1240,7 @@ void rightSide6Ball() {
     pros::delay(100);
     EzTempChassis.pid_wait_until(155);
     intake=127; // outtake
-    pros::delay(300);
+    pros::delay(400);
 
     EzTempChassis.pid_turn_set(70, 127, false);
     pros::delay(100);
