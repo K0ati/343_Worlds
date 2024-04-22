@@ -969,7 +969,7 @@ void rightSideQuickRush() {
     // pros::delay(100);
     // EzTempChassis.pid_wait_until(-15);
     // swing out 
-    EzTempChassis.pid_swing_set(ez::LEFT_SWING, 135, 127, 105);
+    EzTempChassis.pid_swing_set(ez::LEFT_SWING, 135, 127, 103);
     pros::delay(400);
 
     // go to ball

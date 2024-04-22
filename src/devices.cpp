@@ -153,7 +153,25 @@ void checkMotorsAndReturnTemperature() {
         double averageTempFahrenheit = averageTempCelsius * 9.0 / 5.0 + 32.0;
         master.set_text(0, 0, "Avg DT Temp: " + std::to_string(averageTempFahrenheit));
 
-        pros::delay(1000);
+        pros::delay(5000);
+    }
+}
+
+void checkPTODeploy() {
+    while (true) {
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) 
+            && master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+                master.set_text(0, 0, "DEPLOYED DEPLOYED");
+        } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && isRatchetOut){
+            string temp;
+            if (isPtoOut) {
+                temp = "activated";
+            } else {
+                temp = "deactivated";
+            }
+            master.set_text(0, 0, "PTO " + temp);
+        }
+        pros::delay(500);
     }
 }
 

@@ -7,8 +7,7 @@
 #include "pros/misc.h"
 #include "screen.hpp"
 #include "display/lvgl.h" 
-// Enter your autons here!
-// Uh Guys be for serious
+
 AutonFunction autonFunctions[] = {
     {"Left Elims Disrupt", leftSideElimsDisrupt},
     {"Right 6 Ball", rightSide6Ball},
@@ -110,12 +109,14 @@ void autonomous() {
 
 bool wasR1PressedLast = false;
 bool wasR2PressedLast = false;
-bool intakeChecker = true;
-bool wingChecker = true;
-bool isTankDrive = true;
+
 void opcontrol() {
+    bool intakeChecker = true;
+    bool wingChecker = true;
+    bool isTankDrive = true;
     // task to make sure all motors are plugged in and check the temperature of the drivetrain
     pros::Task motorCheckDT(checkMotorsAndReturnTemperature);
+    pros::Task deployCheck(checkPTODeploy);
 
 
     // Driver Skills Code (COMMENT OUT when not doing skills)
@@ -147,6 +148,7 @@ void opcontrol() {
 
     EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
     bool isDriveOnHold = false;
+    bool deployTriggered = false;
 	while (true) {
         // tank_drive( 
             
@@ -157,6 +159,7 @@ void opcontrol() {
         if (isTankDrive) {
             EzTempChassis.opcontrol_tank();
         } else {
+            EzTempChassis.opcontrol_drive_reverse_set(true);
             EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);
         }
         
@@ -171,65 +174,75 @@ void opcontrol() {
             && master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) { 
             toggleDeploy();
             EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
+            EzTempChassis.opcontrol_curve_default_set(20, 0);
             wingChecker = false;
             intakeChecker = false;
             isTankDrive = false;
+            deployTriggered = true;
             pros::delay(300);
             continue;
         }
 
-        // R1 Not R2 is Wings
-        // R1+R2 is Intake
+        // R1 is Wings
+        // R2 is Intake
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && !isRatchetOut) { 
-            togglePTO();
-            pros::delay(250);
+        if (!deployTriggered) {
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && isRatchetOut) { 
+                togglePTO();
+                
+                pros::delay(250);
+            }
+
+            bool isR1Pressed = master.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
+            bool isR2Pressed = master.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
+
+            if (isR2Pressed && !wasR2PressedLast && intakeChecker) {
+                toggleIntake();
+            }
+            
+            if (isR1Pressed && !wasR1PressedLast && wingChecker) {
+                toggleHorzWings();
+            }
+            wasR1PressedLast = isR1Pressed;
+            wasR2PressedLast = isR2Pressed;
+
+            // // Toggle Horz Wings on rising edge of DOWN button press
+            // if (isR2Pressed && !wasR2PressedLast) {
+            //     toggleHorzWings();
+            // }
+            // wasR2PressedLast = isR2Pressed;   
+
+            
+
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
+                intake = 127; 
+            } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) { 
+                intake = -127; 
+            } else { 
+                intake = 0; 
+            }   
+
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) { 
+                motorCheckDT.suspend(); 
+            }
+
+            // if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) { 
+            //     EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
+            // }
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+                intakeChecker = true;
+                wingChecker = true;
+            }
+
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
+                EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
+            }
+
+
         }
 
-        bool isR1Pressed = master.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
-        bool isR2Pressed = master.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
-
-        if (isR2Pressed && !wasR2PressedLast && intakeChecker) {
-            toggleIntake();
-        }
+        deployTriggered = false;
         
-        if (isR1Pressed && !wasR1PressedLast && wingChecker) {
-            toggleHorzWings();
-        }
-        wasR1PressedLast = isR1Pressed;
-        wasR2PressedLast = isR2Pressed;
-
-        // // Toggle Horz Wings on rising edge of DOWN button press
-        // if (isR2Pressed && !wasR2PressedLast) {
-        //     toggleHorzWings();
-        // }
-        // wasR2PressedLast = isR2Pressed;   
-
-        
-
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
-            intake = 127; 
-        } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) { 
-            intake = -127; 
-        } else { 
-            intake = 0; 
-        }   
-
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) { 
-            motorCheckDT.suspend(); 
-        }
-
-        // if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) { 
-        //     EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
-        // }
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-            intakeChecker = true;
-            wingChecker = true;
-        }
-
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
-            EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
-        }
 
         
 		pros::delay(ez::util::DELAY_TIME);

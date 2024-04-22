@@ -37,6 +37,7 @@ extern lemlib::Chassis chassis;
 extern Drive EzTempChassis;
 
 void checkMotorsAndReturnTemperature();
+void checkPTODeploy();
 
 void calibrateBothChassis(bool isLemLib = false);
 void ezTempChassisInits();
