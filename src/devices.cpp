@@ -35,7 +35,7 @@ pros::Motor rightMiddle2(11, pros::E_MOTOR_GEARSET_06, true);
 pros::MotorGroup left_side_motors({leftFront, leftBack, leftMiddle1, leftMiddle2});
 pros::MotorGroup right_side_motors({rightFront, rightFront, rightMiddle1, leftMiddle2});
 
-pros::Imu inertial_sensor(1); 
+pros::Imu inertial_sensor(10); 
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
@@ -49,7 +49,7 @@ Drive EzTempChassis (
   ,{14, 13, -12, 11}
 
   // IMU Port
-  ,1
+  ,10
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
@@ -173,9 +173,9 @@ void default_constants() {
 }
 
 void modified_exit_conditions() {
-  EzTempChassis.pid_turn_exit_condition_set(200_ms, 3_deg, 200_ms, 7_deg, 200_ms, 200_ms);
-  EzTempChassis.pid_swing_exit_condition_set(200_ms, 3_deg, 200_ms, 7_deg, 200_ms, 200_ms);
-  EzTempChassis.pid_drive_exit_condition_set(200_ms, 1_in, 200_ms, 3_in, 200_ms, 200_ms);
+  EzTempChassis.pid_turn_exit_condition_set(150_ms, 3_deg, 150_ms, 7_deg, 150_ms, 150_ms);
+  EzTempChassis.pid_swing_exit_condition_set(150_ms, 3_deg, 150_ms, 7_deg, 150_ms, 150_ms);
+  EzTempChassis.pid_drive_exit_condition_set(150_ms, 1_in, 150_ms, 3_in, 150_ms, 150_ms);
 }
 
 void calibrateBothChassis(bool isLemLib /* defaulted to false in the .h file */) {

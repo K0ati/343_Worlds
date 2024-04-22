@@ -10,17 +10,16 @@
 // Enter your autons here!
 // Uh Guys be for serious
 AutonFunction autonFunctions[] = {
-    {"Right 6 Ball", rightSide6Ball}, 
-    {"Nothing", doNothing}, 
-    
-    {"Left Quals Rush", leftSideQual},
-    
-    {"Right Far Rush", rightSideFarRush},
-    
-    {"Skills", skills},  
     {"Left Elims Disrupt", leftSideElimsDisrupt},
+    {"Right 6 Ball", rightSide6Ball},
+    {"Right Elim Quick Rush", rightSideQuickRush},
+     
+    {"Nothing", doNothing}, 
+    {"Left Quals Rush", leftSideQual},
+    {"Right Far Rush", rightSideFarRush},
+    {"Skills", skills},  
+    
     {"Left Elims 4 Ball Bowl Setup", leftSideElimsBowlSetup},
-    // {"Left Quals", leftSideQualOld},
     {"Right 5 Ball", rightSideQuals},
     {"Right 3 Bar", rightSideQualsTouchBar},
 };
@@ -113,6 +112,7 @@ bool wasR1PressedLast = false;
 bool wasR2PressedLast = false;
 bool intakeChecker = true;
 bool wingChecker = true;
+bool isTankDrive = true;
 void opcontrol() {
     // task to make sure all motors are plugged in and check the temperature of the drivetrain
     pros::Task motorCheckDT(checkMotorsAndReturnTemperature);
@@ -145,8 +145,6 @@ void opcontrol() {
     // }
     // END OF SKILLS AUTO CODE
 
-
-    // ZACH YOU NEED TO LOCK IN ON DRiVING AND CODING AND LOCK ThE FUCK IN WAKEY WAKEY
     EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
     bool isDriveOnHold = false;
 	while (true) {
@@ -156,8 +154,12 @@ void opcontrol() {
         //     // adjust curve (DEFAULT IS 7.0):
         //     // <curve_value_here>
         // );
-
-        EzTempChassis.opcontrol_tank();
+        if (isTankDrive) {
+            EzTempChassis.opcontrol_tank();
+        } else {
+            EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);
+        }
+        
 
 		// if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) { 
         //     releaseClamp();
@@ -168,14 +170,18 @@ void opcontrol() {
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) 
             && master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) { 
             toggleDeploy();
-            EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
+            EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
             wingChecker = false;
             intakeChecker = false;
+            isTankDrive = false;
             pros::delay(300);
             continue;
         }
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && isRatchetOut) { 
+        // R1 Not R2 is Wings
+        // R1+R2 is Intake
+
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2) && !isRatchetOut) { 
             togglePTO();
             pros::delay(250);
         }
@@ -183,7 +189,7 @@ void opcontrol() {
         bool isR1Pressed = master.get_digital(pros::E_CONTROLLER_DIGITAL_R1);
         bool isR2Pressed = master.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
 
-        if (isR1Pressed && !wasR1PressedLast && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && intakeChecker) {
+        if (isR2Pressed && !wasR2PressedLast && intakeChecker) {
             toggleIntake();
         }
         
@@ -191,6 +197,7 @@ void opcontrol() {
             toggleHorzWings();
         }
         wasR1PressedLast = isR1Pressed;
+        wasR2PressedLast = isR2Pressed;
 
         // // Toggle Horz Wings on rising edge of DOWN button press
         // if (isR2Pressed && !wasR2PressedLast) {
@@ -212,10 +219,9 @@ void opcontrol() {
             motorCheckDT.suspend(); 
         }
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) { 
-            EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
-        }
-
+        // if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) { 
+        //     EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
+        // }
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
             intakeChecker = true;
             wingChecker = true;

@@ -14,3 +14,4 @@ void rightSideFarRush();
 void rightSide6Ball();
 void skills();
 void maintainOrientationTask();
+void rightSideQuickRush();
