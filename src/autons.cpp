@@ -450,25 +450,26 @@ void leftSideQual(){
     EzTempChassis.drive_angle_set(-74);
     toggleHorzWings();
     //Rush midball
-    EzTempChassis.pid_drive_set(49, 127, true);
+    EzTempChassis.pid_drive_set(48, 127, true);
     pros::delay(100);
     EzTempChassis.pid_wait_until(3);
     toggleHorzWings();
     intake = -127;              //intake
+    pros::delay(150);
     EzTempChassis.pid_wait();
 
-    EzTempChassis.pid_drive_set(-55, 118, false);
-    pros::delay(100);
+    EzTempChassis.pid_drive_set(-55, 118, true);
+    pros::delay(200);
     EzTempChassis.pid_wait();
 
     EzTempChassis.pid_turn_set(0, TURN_SPEED, false);
     EzTempChassis.pid_wait();
 
     intake=127;                 //outtake
-    pros::delay(400);
+    pros::delay(600);
 
 //BAR
-    EzTempChassis.pid_turn_set(26, TURN_SPEED);
+    EzTempChassis.pid_turn_set(32, TURN_SPEED);
     pros::delay(100);
     EzTempChassis.pid_wait();
     intake=0;
@@ -483,6 +484,8 @@ void leftSideQual(){
 
 // Get Matchload ball
     toggleHorzWings();
+
+    pros::delay(200);
 
     EzTempChassis.pid_drive_set(11, DRIVE_SPEED, false);
     pros::delay(100);
@@ -969,29 +972,29 @@ void rightSideQuickRush() {
     // pros::delay(100);
     // EzTempChassis.pid_wait_until(-15);
     // swing out 
-    EzTempChassis.pid_swing_set(ez::LEFT_SWING, 135, 127, 103);
-    pros::delay(400);
+    EzTempChassis.pid_swing_set(ez::LEFT_SWING, 140, 127, 104);
+    pros::delay(350);
 
     // go to ball
     EzTempChassis.pid_drive_set(-50, 127, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(-11.5);
+    EzTempChassis.pid_wait_until(-10);
 
     toggleHorzWings();
 
     //turn to center ball and knock other one
-    EzTempChassis.pid_turn_set(335, -127);
+    EzTempChassis.pid_turn_set(325, -127);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(330);
+    EzTempChassis.pid_wait_until(320);
 
-    EzTempChassis.pid_turn_set(285, -127);
+    EzTempChassis.pid_turn_set(295, -127);
     pros::delay(10);
 
     // grab ball
     EzTempChassis.pid_drive_set(24, 127, false);
     pros::delay(100);
     toggleHorzWings();
-    EzTempChassis.pid_wait_until(13);
+    EzTempChassis.pid_wait_until(12);
 
     // come back
     EzTempChassis.pid_drive_set(-24, 127, false);
@@ -1000,39 +1003,39 @@ void rightSideQuickRush() {
 
     // shoot ball to goal
     EzTempChassis.pid_turn_set(90 + 360, 127);
-    pros::delay(200);
+    pros::delay(300);
     intake=127;
-    pros::delay(200);
+    pros::delay(400);
 
     // turn back to starting position
-    EzTempChassis.pid_turn_set(-12 + 360, 127);
+    EzTempChassis.pid_turn_set(-9 + 360, 127);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(-9 + 360);
+    EzTempChassis.pid_wait_until(-6 + 360);
 
     // come back to start
-    EzTempChassis.pid_drive_set(-55, 127, false);
+    EzTempChassis.pid_drive_set(-45, 127, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(-47);
+    EzTempChassis.pid_wait_until(-40);
 
     // turn to alliance elevation ball
-    EzTempChassis.pid_turn_set(-93 + 360, 127);
+    EzTempChassis.pid_turn_set(-90 + 360, 127);
     pros::delay(300);
-    EzTempChassis.pid_wait_until(-91 + 360);
+    EzTempChassis.pid_wait_until(-87 + 360);
     
     intake=-127;
 
     // get alliance elevation  ball 
-    EzTempChassis.pid_drive_set(38, 127, false);
+    EzTempChassis.pid_drive_set(34.5, 127, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(35);
+    EzTempChassis.pid_wait_until(30.5);
 
-    EzTempChassis.pid_turn_set(-102 + 360, 127);
-    EzTempChassis.pid_wait_until(-98 + 360);
+    EzTempChassis.pid_turn_set(-103.5 + 360, 127);
+    EzTempChassis.pid_wait_until(-99.5 + 360);
 
     // come back
-    EzTempChassis.pid_drive_set(-44, 127, false);
+    EzTempChassis.pid_drive_set(-38.5, 127, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(-30);
+    EzTempChassis.pid_wait_until(-34.5);
 
     // turn to matchload bar
     EzTempChassis.pid_turn_set(45 + 360, 127);
@@ -1041,6 +1044,7 @@ void rightSideQuickRush() {
     
     // knock ball out of matchload
     toggleHorzWings();
+    pros::delay(300);
     EzTempChassis.pid_turn_set(0 + 360, 127);
     pros::delay(150);
     toggleHorzWings();
@@ -1064,9 +1068,9 @@ void rightSideQuickRush() {
     pros::delay(575);
 
     // come back
-    EzTempChassis.pid_drive_set(-24, 127, false);
+    EzTempChassis.pid_drive_set(-14, 127, false);
     pros::delay(200);
-    EzTempChassis.pid_wait_until(-12);
+    EzTempChassis.pid_wait_until(-7);
     
     // second part 
     EzTempChassis.pid_turn_set(-68 + 360, 127);
@@ -1082,13 +1086,13 @@ void rightSideQuickRush() {
     pros::delay(100);
     EzTempChassis.pid_wait_until(0 + 360);
 
-    EzTempChassis.pid_drive_set(36, 127, false);
+    EzTempChassis.pid_drive_set(20, 127, false);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(16);
+    EzTempChassis.pid_wait_until(9);
 
-    EzTempChassis.pid_turn_set(92 + 360, 127);
+    EzTempChassis.pid_turn_set(90 + 360, 127);
     pros::delay(100);
-    EzTempChassis.pid_wait_until(90 + 360);
+    EzTempChassis.pid_wait_until(87 + 360);
 
     toggleHorzWings();
 

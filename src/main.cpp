@@ -9,12 +9,16 @@
 #include "display/lvgl.h" 
 
 AutonFunction autonFunctions[] = {
-    {"Left Elims Disrupt", leftSideElimsDisrupt},
-    {"Right 6 Ball", rightSide6Ball},
+    {"Left Quals Rush", leftSideQual},
     {"Right Elim Quick Rush", rightSideQuickRush},
+    {"Left Elims Disrupt", leftSideElimsDisrupt},
+    
+    
+    {"Right 6 Ball", rightSide6Ball},
+    
      
     {"Nothing", doNothing}, 
-    {"Left Quals Rush", leftSideQual},
+    
     {"Right Far Rush", rightSideFarRush},
     {"Skills", skills},  
     
@@ -118,6 +122,9 @@ void opcontrol() {
     pros::Task motorCheckDT(checkMotorsAndReturnTemperature);
     pros::Task deployCheck(checkPTODeploy);
 
+    EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
+    bool isDriveOnHold = false;
+    bool deployTriggered = false;
 
     // Driver Skills Code (COMMENT OUT when not doing skills)
     // EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
@@ -146,9 +153,7 @@ void opcontrol() {
     // }
     // END OF SKILLS AUTO CODE
 
-    EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
-    bool isDriveOnHold = false;
-    bool deployTriggered = false;
+    
 	while (true) {
         // tank_drive( 
             
@@ -174,10 +179,10 @@ void opcontrol() {
             && master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) { 
             toggleDeploy();
             EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
-            EzTempChassis.opcontrol_curve_default_set(20, 0);
+            EzTempChassis.opcontrol_curve_default_set(12, 0);
             wingChecker = false;
             intakeChecker = false;
-            isTankDrive = false;
+            // isTankDrive = false;
             deployTriggered = true;
             pros::delay(300);
             continue;

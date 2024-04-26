@@ -12,15 +12,15 @@ bool isRatchetOut = false;
 
 pros::ADIDigitalOut intake1('C');
 pros::ADIDigitalOut intake2('C');
-pros::ADIDigitalOut pto('A');
+pros::ADIDigitalOut pto('B');
 pros::ADIDigitalOut horzwing1('D');
-pros::ADIDigitalOut deploy('B');
+pros::ADIDigitalOut deploy('A');
 pros::ADIDigitalOut horzwing2('D');
 pros::ADIDigitalOut clampStopper('X');
 // pros::ADIDigitalIn limitswitch ('E');
 
 
-pros::Motor intake (-16, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor intake (15, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
 
 pros::Motor leftFront(17, pros::E_MOTOR_GEARSET_06, false); 
 pros::Motor leftBack(18, pros::E_MOTOR_GEARSET_06, false); 
